@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateUserInput } from './dto/user.input';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User) 
+    private usersRepository: Repository<User>,
+  ) { }
+
+  /**
+   * Gets all users
+   */
+  async getAllUsers() {
+    try {
+      return await this.usersRepository.find();
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
+  /**
+   * Creates user
+   * @param createUserInput 
+   */
+  async createUser(createUserInput: CreateUserInput) {
+    try {
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
   }
 }

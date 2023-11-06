@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { dataSourceOptions } from './config/data-source';
 
 @Module({
   imports: [
@@ -13,6 +15,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       introspection: true,
       playground: true,
     }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule
   ],
   controllers: [AppController],
