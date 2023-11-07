@@ -11,6 +11,17 @@ type User {
   updatedAt: String
 }
 
+type LoginResponse {
+  access_token: String!
+  user: User!
+}
+
+type SignupResponse {
+  message: String!
+  status: Float!
+  email: String
+}
+
 type CreatedUserResponse {
   users: [User!]
   count: Int!
@@ -22,6 +33,8 @@ type Query {
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): CreatedUserResponse!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  signup(signupUserInput: SignupUserInput!): SignupResponse!
 }
 
 input CreateUserInput {
@@ -29,4 +42,14 @@ input CreateUserInput {
   password: String!
   firstName: String
   lastName: String
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+input SignupUserInput {
+  email: String!
+  password: String!
 }
