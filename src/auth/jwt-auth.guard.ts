@@ -24,7 +24,7 @@ export class JwtAuthGraphQLGuard extends AuthGuard('jwt') {
     }
     const token = auth.split(' ')[1];
     try {
-      const user = await this.authService.verify(token)
+      const user = await this.authService.verify(token);
       return user;
     } catch (err) {
 

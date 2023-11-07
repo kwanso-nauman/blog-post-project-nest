@@ -15,7 +15,7 @@ export class User {
   email: string;
 
   @Column()
-  password: string
+  password?: string;
 
   // other fields
   @Field({ nullable: true })
@@ -24,7 +24,7 @@ export class User {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  lastName: string
+  lastName: string;
 
   // timestampz columns
   @CreateDateColumn({ type: 'timestamptz', nullable: true })

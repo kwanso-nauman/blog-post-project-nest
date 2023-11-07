@@ -11,9 +11,9 @@ type User {
   updatedAt: String
 }
 
-type LoginResponse {
-  access_token: String!
-  user: User!
+type CreatedUserResponse {
+  users: [User!]
+  count: Int!
 }
 
 type SignupResponse {
@@ -22,9 +22,9 @@ type SignupResponse {
   email: String
 }
 
-type CreatedUserResponse {
-  users: [User!]
-  count: Int!
+type LoginResponse {
+  access_token: String!
+  user: User!
 }
 
 type Query {

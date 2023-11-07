@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './config/data-source';
 import { AuthModule } from './auth/auth.module';
+import { UsersAuthModule } from './users-auth/users-auth.module';
 
 @Module({
   imports: [
@@ -18,9 +17,8 @@ import { AuthModule } from './auth/auth.module';
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule,
-    AuthModule
+    AuthModule,
+    UsersAuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
