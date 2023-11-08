@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Post } from 'src/posts/entities/post.entity';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({ name: 'Users' })
 @ObjectType()
@@ -15,7 +16,7 @@ export class User {
   email: string;
 
   @Column()
-  password: string
+  password?: string;
 
   // other fields
   @Field({ nullable: true })
@@ -24,7 +25,7 @@ export class User {
 
   @Field({ nullable: true })
   @Column({ nullable: true })
-  lastName: string
+  lastName: string;
 
   // timestampz columns
   @CreateDateColumn({ type: 'timestamptz', nullable: true })
@@ -34,4 +35,8 @@ export class User {
   @UpdateDateColumn({ type: 'timestamptz', nullable: true })
   @Field({ nullable: true })
   updatedAt: string;
+
+  // relationships
+  @OneToMany(() => Post, (posts) => posts.user)
+  posts: Post[];
 }
