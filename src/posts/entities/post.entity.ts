@@ -46,7 +46,7 @@ export class Post {
   comments: Comment[];
 
   // relationship columns
-  @Column({ nullable: true, type: 'uuid'})
+  @Column({ nullable: true, type: 'uuid' })
   @Field({ nullable: true })
   userId: string;
 }

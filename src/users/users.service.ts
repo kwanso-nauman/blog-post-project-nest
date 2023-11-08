@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserInput } from './dto/user.input';
+import { AllUsersPayload, CreateUserInput } from './dto/user.input';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -14,9 +14,10 @@ export class UsersService {
   /**
    * Gets all users
    */
-  async getAllUsers() {
+  async getAllUsers(): Promise<AllUsersPayload> {
     try {
-      return await this.usersRepository.find();
+      const [users, count] = await this.usersRepository.findAndCount();
+      return { users, count };
     } catch (err) {
       throw new InternalServerErrorException(err);
     }

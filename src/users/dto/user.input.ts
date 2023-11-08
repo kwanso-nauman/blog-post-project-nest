@@ -23,10 +23,10 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
 }
 
 @ObjectType()
-export class CreatedUserResponse {
+export class AllUsersPayload {
   @Field(() => [User], { nullable: true })
   users?: User[]
 
-  @Field(()=> Int)
+  @Field(()=> Int, { nullable: true })
   count?: number;
 }

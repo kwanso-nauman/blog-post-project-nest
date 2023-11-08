@@ -1,5 +1,5 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateUserInput, CreatedUserResponse } from './dto/user.input';
+import { AllUsersPayload, CreateUserInput } from './dto/user.input';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 import { UseGuards } from '@nestjs/common';
@@ -11,13 +11,13 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) { }
 
   // queries
-  @Query(() => [User])
-  async getAllUsers() {
+  @Query(() => AllUsersPayload)
+  async getAllUsers(): Promise<AllUsersPayload> {
     return this.usersService.getAllUsers();
   }
 
   // mutations
-  @Mutation(() => CreatedUserResponse)
+  @Mutation()
   async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     return await this.usersService.createUser(createUserInput);
   }
