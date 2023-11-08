@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './config/data-source';
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { PostsModule } from './posts/posts.module';
     TypeOrmModule.forRoot(dataSourceOptions),
     UsersModule,
     AuthModule,
-    PostsModule
+    PostsModule,
+    CommentsModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,6 +1,7 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
+import { Comment } from 'src/comments/entities/comment.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity({ name: 'Posts' })
 @ObjectType()
@@ -40,6 +41,9 @@ export class Post {
   @ManyToOne(() => User, (user) => user.posts)
   @Field(() => User, { nullable: true })
   user: User;
+
+  @OneToMany(() => Comment, (comments) => comments.post)
+  comments: Comment[];
 
   // relationship columns
   @Column({ nullable: true, type: 'uuid'})

@@ -2,6 +2,32 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Comment {
+  id: String!
+  body: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  post: Post
+  postId: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Post {
+  id: String!
+  title: String
+  body: String
+  image: String
+  timeToRead: Float
+  createdAt: DateTime
+  updatedAt: DateTime
+  user: User
+  userId: String
+}
+
 type User {
   id: String!
   email: String!
@@ -29,12 +55,17 @@ type CreatedUserResponse {
 
 type Query {
   getAllUsers: [User!]!
+  comments: [Comment!]!
+  comment(id: Int!): Comment!
 }
 
 type Mutation {
   createUser(createUserInput: CreateUserInput!): CreatedUserResponse!
   login(loginUserInput: LoginUserInput!): LoginResponse!
   signup(signupUserInput: SignupUserInput!): SignupResponse!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  removeComment(id: Int!): Comment!
 }
 
 input CreateUserInput {
@@ -52,4 +83,15 @@ input LoginUserInput {
 input SignupUserInput {
   email: String!
   password: String!
+}
+
+input CreateCommentInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateCommentInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
