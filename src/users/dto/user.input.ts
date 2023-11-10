@@ -21,12 +21,3 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
   @Field(() => String)
   id: string;
 }
-
-@ObjectType()
-export class AllUsersPayload {
-  @Field(() => [User], { nullable: true })
-  users?: User[]
-
-  @Field(()=> Int, { nullable: true })
-  count?: number;
-}

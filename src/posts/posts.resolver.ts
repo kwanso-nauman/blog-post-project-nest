@@ -1,21 +1,32 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { PostsService } from './posts.service';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { User } from 'src/users/entities/user.entity';
+import { CreatePostInput } from './dto/post.input';
+import { AllPostsPayload } from './dto/post.payload';
 import { Post } from './entities/post.entity';
-import { CreatePostInput } from './dto/create-post.input';
+import { PostsService } from './posts.service';
 
 @Resolver(() => Post)
 export class PostsResolver {
   constructor(private readonly postsService: PostsService) { }
 
   // queries
-  @Query(() => [Post])
-  async getAllPosts() {
-    // return this.postsService.getAllPosts();
+  @Query(() => AllPostsPayload)
+  async getAllPosts(): Promise<AllPostsPayload> {
+    return this.postsService.getAllPosts();
   }
 
   // mutations
-  @Mutation()
-  async createUser(@Args('createPostInput') createPostInput: CreatePostInput) {
-    // return await this.postsService.createPost(createPostInput);
+  @Mutation(() => Post)
+  async createPost(@Args('createPostInput') createPostInput: CreatePostInput): Promise<Post> {
+    return await this.postsService.createPost(createPostInput);
+  }
+
+  // resolve fields
+  @ResolveField(() => User)
+  async user(@Parent() post: Post): Promise<User> {
+    const { userId } = post;
+    if (userId) {
+      return await this.postsService.getUserById(userId);
+    }
   }
 }

@@ -1,7 +1,8 @@
-import { HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AllUsersPayload, CreateUserInput } from './dto/user.input';
+import { CreateUserInput } from './dto/user.input';
+import { AllUsersPayload } from './dto/user.payload';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -16,10 +17,12 @@ export class UsersService {
    */
   async getAllUsers(): Promise<AllUsersPayload> {
     try {
-      const [users, count] = await this.usersRepository.findAndCount();
+      const [users, count] = await this.usersRepository.findAndCount({
+        relations: ['posts'], // Include the posts relation
+      });
       return { users, count };
     } catch (err) {
-      throw new InternalServerErrorException(err);
+      throw err;
     }
   }
 
@@ -27,11 +30,11 @@ export class UsersService {
    * Creates user
    * @param createUserInput 
    */
-  async createUser(createUserInput: CreateUserInput) {
+  async createUser(createUserInput: CreateUserInput): Promise<User> {
     try {
       return await this.usersRepository.save(createUserInput);
     } catch (err) {
-      throw new InternalServerErrorException(err);
+      throw err;
     }
   }
 
@@ -53,7 +56,7 @@ export class UsersService {
     try {
       return this.usersRepository.findOneOrFail({ where: { id } });
     } catch (err) {
-      throw new InternalServerErrorException(err);
+      throw err;
     }
   }
 }

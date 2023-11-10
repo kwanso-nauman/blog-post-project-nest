@@ -39,6 +39,7 @@ export class User {
 
   // relationships
   @OneToMany(() => Post, (posts) => posts.user)
+  @Field(() => [Post], { nullable: "itemsAndList" })
   posts: Post[];
 
   @OneToMany(() => Comment, (comments) => comments.user)
