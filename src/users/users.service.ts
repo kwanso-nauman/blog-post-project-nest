@@ -59,4 +59,14 @@ export class UsersService {
       throw err;
     }
   }
+
+  async verify(token: string): Promise<any> {
+    // const secret = await this.jwtService.verify(token);
+    // const user = await this.findOne(secret.sub);
+
+    // return {
+    //   ...secret,
+    //   user: user
+    // };
+  }
 }

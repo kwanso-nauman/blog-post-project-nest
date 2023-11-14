@@ -2,10 +2,11 @@ import { ExecutionContext, HttpException, HttpStatus, Injectable } from "@nestjs
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "./auth.service";
+import { UsersService } from "../users.service";
 
 @Injectable()
 export class JwtAuthGraphQLGuard extends AuthGuard('jwt') {
-  constructor(private authService: AuthService) {
+  constructor(private usersService: UsersService) {
     super();
   }
 
@@ -24,7 +25,7 @@ export class JwtAuthGraphQLGuard extends AuthGuard('jwt') {
     }
     const token = auth.split(' ')[1];
     try {
-      const user = await this.authService.verify(token)
+      const user = await this.usersService.verify(token)
       return user;
     } catch (err) {
 

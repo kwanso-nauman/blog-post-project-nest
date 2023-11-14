@@ -1,33 +1,22 @@
-import { Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommentsService } from './comments.service';
+import { CreateCommentInput } from './dto/comment.input';
+import { AllCommentsPayload } from './dto/comment.payload';
 import { Comment } from './entities/comment.entity';
 
 @Resolver(() => Comment)
 export class CommentsResolver {
   constructor(private readonly commentsService: CommentsService) { }
 
-  // @Mutation(() => Comment)
-  // createComment(@Args('createCommentInput') createCommentInput: CreateCommentInput) {
-  //   return this.commentsService.create(createCommentInput);
-  // }
+  // mutations
+  @Mutation(() => Comment)
+  createComment(@Args('CreateCommentInput') createCommentInput: CreateCommentInput) {
+    return this.commentsService.createComment(createCommentInput);
+  }
 
-  // @Query(() => [Comment], { name: 'comments' })
-  // findAll() {
-  //   return this.commentsService.findAll();
-  // }
-
-  // @Query(() => Comment, { name: 'comment' })
-  // findOne(@Args('id', { type: () => Int }) id: number) {
-  //   return this.commentsService.findOne(id);
-  // }
-
-  // @Mutation(() => Comment)
-  // updateComment(@Args('updateCommentInput') updateCommentInput: UpdateCommentInput) {
-  //   return this.commentsService.update(updateCommentInput.id, updateCommentInput);
-  // }
-
-  // @Mutation(() => Comment)
-  // removeComment(@Args('id', { type: () => Int }) id: number) {
-  //   return this.commentsService.remove(id);
-  // }
+  // queries
+  @Query(() => AllCommentsPayload)
+  async getAllPosts(): Promise<AllCommentsPayload> {
+    return this.commentsService.getAllComments();
+  }
 }

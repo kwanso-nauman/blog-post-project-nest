@@ -1,6 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { JwtAuthGraphQLGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGraphQLGuard } from 'src/users/auth/jwt-auth.guard';
 import { CreateUserInput } from './dto/user.input';
 import { AllUsersPayload } from './dto/user.payload';
 import { User } from './entities/user.entity';

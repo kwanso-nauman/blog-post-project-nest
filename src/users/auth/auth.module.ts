@@ -8,7 +8,7 @@ import { JwtStrategy } from './jwt-strategy';
 
 @Module({
   imports: [
-    forwardRef(() => UsersModule),
+    UsersModule,
     PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.register({
       signOptions: { expiresIn: '2h' },
