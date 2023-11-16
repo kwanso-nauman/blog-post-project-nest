@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/user.input';
@@ -10,6 +11,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private jwtService: JwtService,
   ) { }
 
   /**
@@ -60,13 +62,18 @@ export class UsersService {
     }
   }
 
+  /**
+   * Verifys users service
+   * @param token 
+   * @returns verify 
+   */
   async verify(token: string): Promise<any> {
-    // const secret = await this.jwtService.verify(token);
-    // const user = await this.findOne(secret.sub);
+    const secret = await this.jwtService.verify(token);
+    const user = await this.findOne(secret.sub);
 
-    // return {
-    //   ...secret,
-    //   user: user
-    // };
+    return {
+      ...secret,
+      user: user
+    };
   }
 }
