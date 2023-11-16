@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
-import { CreatePostInput } from './dto/post.input';
+import { CreatePostInput, PostsQueryInput } from './dto/post.input';
 import { AllPostsPayload } from './dto/post.payload';
 import { Post } from './entities/post.entity';
+import { Args } from '@nestjs/graphql';
 
 @Injectable()
 export class PostsService {
@@ -19,12 +20,13 @@ export class PostsService {
    * Gets all posts
    * @returns all posts 
    */
-  async getAllPosts(): Promise<AllPostsPayload> {
+  async getAllPosts(@Args('payload') payload: PostsQueryInput): Promise<AllPostsPayload> {
+    const { page, limit, filter } = payload;
     try {
       const [posts, count] = await this.postsRepository.findAndCount();
       return { posts, count };
     } catch (err) {
-      throw err;
+      throw new InternalServerErrorException(err, { cause: new Error() });
     }
   }
 
@@ -37,7 +39,7 @@ export class PostsService {
     try {
       return await this.postsRepository.save(createPostInput);
     } catch (err) {
-      throw err;
+      throw new InternalServerErrorException(err, { cause: new Error() });
     }
   }
 

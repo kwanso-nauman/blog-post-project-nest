@@ -1,4 +1,5 @@
 import { InputType, Field, Int } from '@nestjs/graphql';
+import { PageCountInput } from 'src/helper/dtos/common.dto';
 
 @InputType()
 export class CreatePostInput {
@@ -16,4 +17,11 @@ export class CreatePostInput {
 
   @Field(() => String, { nullable: true })
   userId?: string;
+}
+
+
+@InputType()
+export class PostsQueryInput extends PageCountInput {
+  @Field(() => PostsQueryInput, { nullable: true })
+  filter?: PostsQueryInput;
 }

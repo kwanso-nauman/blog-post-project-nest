@@ -1,5 +1,5 @@
 import { HttpStatus } from "@nestjs/common";
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, InputType, Int, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 export class ResponseMsgPayload {
@@ -8,4 +8,13 @@ export class ResponseMsgPayload {
 
   @Field()
   status: HttpStatus | Number;
+}
+
+@InputType()
+export class PageCountInput {
+  @Field(() => Int)
+  limit?: number;
+
+  @Field(() => Int)
+  page?: number;
 }
