@@ -1,6 +1,7 @@
-import { ExecutionContext, HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { AuthGuard } from "@nestjs/passport";
+import { User } from "../entities/user.entity";
 import { UsersService } from "../users.service";
 
 @Injectable()
@@ -18,21 +19,16 @@ export class JwtAuthGraphQLGuard extends AuthGuard('jwt') {
     return true;
   }
 
-  async validateToken(auth: string) {
+  async validateToken(auth: string): Promise<User> {
     if (auth.split(' ')[0] !== 'Bearer') {
-      throw new HttpException('Invalid Authorization Token - No Token Provided in Headers', HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException('Invalid Authorization Token - No Token Provided in Headers.', { cause: new Error() });
     }
     const token = auth.split(' ')[1];
     try {
       const user = await this.usersService.verify(token);
       return user;
     } catch (err) {
-
-      throw new HttpException({
-        status: HttpStatus.UNAUTHORIZED,
-        error: 'Invalid Authorization Token - Expired or Invalid',
-        message: 'Token Invalid'
-      }, HttpStatus.UNAUTHORIZED);
+      throw new UnauthorizedException('Invalid Authorization Token - Expired or Invalid.', { cause: new Error() });
     }
   }
 }

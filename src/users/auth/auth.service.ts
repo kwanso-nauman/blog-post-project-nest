@@ -31,7 +31,7 @@ export class AuthService {
         user: validatedUser
       }
     } catch (err) {
-      throw new InternalServerErrorException(err);
+      throw new InternalServerErrorException(err, { cause: new Error() });
     }
   }
 
@@ -59,23 +59,8 @@ export class AuthService {
         }
       }
     } catch (err) {
-      throw err;
+      throw new InternalServerErrorException('User already exists with this email.', { cause: new Error() });
     }
-  }
-
-  /**
-  * helper function
-  * @param token 
-  * @returns  jwt object with roles
-  */
-  async verify(token: string): Promise<any> {
-    const secret = await this.jwtService.verify(token);
-    const user = await this.usersService.findOne(secret.sub);
-
-    return {
-      ...secret,
-      user: user
-    };
   }
 
   /**
