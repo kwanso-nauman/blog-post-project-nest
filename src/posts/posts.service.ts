@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { Repository } from 'typeorm';
-import { CreatePostInput, PostsQueryInput } from './dto/post.input';
+import { CreatePostInput, PostsFilterInput, PostsQueryInput } from './dto/post.input';
 import { AllPostsPayload } from './dto/post.payload';
 import { Post } from './entities/post.entity';
 import { Args } from '@nestjs/graphql';
@@ -21,9 +21,16 @@ export class PostsService {
    * @returns all posts 
    */
   async getAllPosts(@Args('payload') payload: PostsQueryInput): Promise<AllPostsPayload> {
-    const { page, limit, filter } = payload;
+    const { page = 1, limit = 10, filter } = payload;
+
     try {
-      const [posts, count] = await this.postsRepository.findAndCount();
+      const where: object = await this.getFilterForPosts(filter);
+      const [posts, count] = await this.postsRepository.findAndCount({
+        skip: (page - 1) * limit,
+        take: limit,
+        where,
+      });
+
       return { posts, count };
     } catch (err) {
       throw new InternalServerErrorException(err, { cause: new Error() });
@@ -52,4 +59,25 @@ export class PostsService {
     return await this.usersService.findOne(userId);
   }
 
+  /**
+   * Gets filter for posts
+   * @param filter 
+   * @returns filter for posts 
+   */
+  async getFilterForPosts(filter: PostsFilterInput): Promise<object> {
+    let where: object = {};
+    if (filter && (filter.body || filter.title)) {
+      where = {};
+
+      if (filter.body) {
+        where = { ...where, body: filter.body };
+      }
+
+      if (filter.title) {
+        where = { ...where, title: filter.title };
+      }
+    }
+
+    return where;
+  }
 }

@@ -14,3 +14,9 @@ export class CreateCommentInput {
   @Field(() => String, { nullable: true })
   parentCommentId?: string;
 }
+
+@InputType()
+export class RepliesQueryInput {
+  @Field(() => String, { nullable: true })
+  parentCommentId?: string;
+}

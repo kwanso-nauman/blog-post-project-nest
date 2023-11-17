@@ -1,6 +1,6 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CommentsService } from './comments.service';
-import { CreateCommentInput } from './dto/comment.input';
+import { CreateCommentInput, RepliesQueryInput } from './dto/comment.input';
 import { AllCommentsPayload } from './dto/comment.payload';
 import { Comment } from './entities/comment.entity';
 
@@ -16,7 +16,21 @@ export class CommentsResolver {
 
   // queries
   @Query(() => AllCommentsPayload)
-  async getAllPosts(): Promise<AllCommentsPayload> {
+  async getAllComments(): Promise<AllCommentsPayload> {
     return this.commentsService.getAllComments();
+  }
+
+  @Query(() => AllCommentsPayload)
+  async getRepliesOfOneComment(@Args('repliesQueryInput') repliesQueryInput: RepliesQueryInput): Promise<AllCommentsPayload> {
+    return this.commentsService.getRepliesOfOneComment(repliesQueryInput);
+  }
+
+  // resolve fields
+  @ResolveField(() => Comment)
+  async childComments(@Parent() comment: Comment): Promise<Comment[]> {
+    const { id } = comment;
+    if (id) {
+      return await this.commentsService.getCommentsByParentId(id);
+    }
   }
 }

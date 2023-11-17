@@ -4,7 +4,7 @@ import { Comment } from '../entities/comment.entity';
 @ObjectType()
 export class AllCommentsPayload {
   @Field(() => [Comment], { nullable: true })
-  comments?: Comment[]
+  comments?: Comment[];
 
   @Field(()=> Int, { nullable: true })
   count?: number;

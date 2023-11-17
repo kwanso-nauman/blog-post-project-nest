@@ -19,9 +19,17 @@ export class CreatePostInput {
   userId?: string;
 }
 
+@InputType()
+export class PostsFilterInput {
+  @Field({ nullable: true })
+  title?: string;
+
+  @Field({ nullable: true })
+  body?: string;
+}
 
 @InputType()
 export class PostsQueryInput extends PageCountInput {
-  @Field(() => PostsQueryInput, { nullable: true })
-  filter?: PostsQueryInput;
+  @Field(() => PostsFilterInput, { nullable: true })
+  filter?: PostsFilterInput;
 }

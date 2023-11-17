@@ -39,7 +39,8 @@ export class Comment {
   parentComment: Comment;
 
   @OneToMany(() => Comment, (comment) => comment.parentComment)
-  childComments: Comment[]
+  @Field(() => [Comment], { nullable: "itemsAndList" })
+  childComments: Comment[];
 
   // relationship columns
   @Column({ nullable: true, type: 'uuid' })

@@ -36,6 +36,7 @@ type Comment {
   updatedAt: DateTime
   post: Post
   user: User
+  childComments: [Comment]
   postId: String
   userId: String
   parentCommentId: String
@@ -69,7 +70,24 @@ type SignupResponse {
 
 type Query {
   getAllUsers: AllUsersPayload!
-  getAllPosts: AllCommentsPayload!
+  getAllPosts(payload: PostsQueryInput!): AllPostsPayload!
+  getAllComments: AllCommentsPayload!
+  getRepliesOfOneComment(repliesQueryInput: RepliesQueryInput!): AllCommentsPayload!
+}
+
+input PostsQueryInput {
+  limit: Int!
+  page: Int!
+  filter: PostsFilterInput
+}
+
+input PostsFilterInput {
+  title: String
+  body: String
+}
+
+input RepliesQueryInput {
+  parentCommentId: String
 }
 
 type Mutation {
