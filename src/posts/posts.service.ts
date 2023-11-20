@@ -24,7 +24,7 @@ export class PostsService {
     const { page = 1, limit = 10, filter } = payload;
 
     try {
-      const where: object = await this.getFilterForPosts(filter);
+      const where: object = this.getFilterForPosts(filter);
       const [posts, count] = await this.postsRepository.findAndCount({
         skip: (page - 1) * limit,
         take: limit,
@@ -64,10 +64,10 @@ export class PostsService {
    * @param filter 
    * @returns filter for posts 
    */
-  async getFilterForPosts(filter: PostsFilterInput): Promise<object> {
+  private getFilterForPosts(filter: PostsFilterInput): object {
     let where: object = {};
-    if (filter && (filter.body || filter.title)) {
-      where = {};
+    // if (filter && (filter.body || filter.title)) {
+      // where = {};
 
       if (filter.body) {
         where = { ...where, body: filter.body };
@@ -76,7 +76,7 @@ export class PostsService {
       if (filter.title) {
         where = { ...where, title: filter.title };
       }
-    }
+    // }
 
     return where;
   }
