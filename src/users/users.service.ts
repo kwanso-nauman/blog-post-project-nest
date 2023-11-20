@@ -20,7 +20,7 @@ export class UsersService {
   async getAllUsers(): Promise<AllUsersPayload> {
     try {
       const [users, count] = await this.usersRepository.findAndCount({
-        relations: ['posts'], // Include the posts relation
+        relations: ['posts'], // Include the posts relation ,, returns all posts can't be paginated or filtered ,, use QueryBuilder or ResolveField
       });
       return { users, count };
     } catch (err) {

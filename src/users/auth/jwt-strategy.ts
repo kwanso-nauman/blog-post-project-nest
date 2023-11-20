@@ -6,7 +6,7 @@ import { jwtConstants } from './jwt-constants';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
-    super({
+    super({ // check all parameters for different strategies
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: jwtConstants,

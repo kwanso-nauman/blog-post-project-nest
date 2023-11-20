@@ -10,7 +10,7 @@ export class JwtAuthGraphQLGuard extends AuthGuard('jwt') {
     super();
   }
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> { // canActivate?
     const ctx = GqlExecutionContext.create(context).getContext();
     if (!ctx.req.headers.authorization) {
       return false;
