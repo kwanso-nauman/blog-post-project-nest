@@ -33,4 +33,7 @@ export class CommentsResolver {
       return await this.commentsService.getCommentsByParentId(id);
     }
   }
+
+  // => add resolve field for fetching the first level of comments along with each post. Only for first call.
+  // as the above resolve field will only work for the nested n level replies.
 }

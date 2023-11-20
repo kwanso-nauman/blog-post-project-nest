@@ -20,7 +20,7 @@ export class PostsService {
    * Gets all posts
    * @returns all posts 
    */
-  async getAllPosts(@Args('payload') payload: PostsQueryInput): Promise<AllPostsPayload> {
+  async getAllPosts(@Args('payload') payload: PostsQueryInput): Promise<AllPostsPayload> { // api not returning page for offset pagination + what will be the case for cursor pagination?
     const { page = 1, limit = 10, filter } = payload;
 
     try {
@@ -64,7 +64,7 @@ export class PostsService {
    * @param filter 
    * @returns filter for posts 
    */
-  private getFilterForPosts(filter: PostsFilterInput): object {
+  private getFilterForPosts(filter: PostsFilterInput): object { // => object type is same is any, use proper type but in this case the type of filter args covers the case.
     let where: object = {};
     // if (filter && (filter.body || filter.title)) {
       // where = {};
@@ -77,7 +77,7 @@ export class PostsService {
         where = { ...where, title: filter.title };
       }
     // }
-
+    // => add filter for user, so that posts are filtered against specific user / user attributes
     return where;
   }
 }
